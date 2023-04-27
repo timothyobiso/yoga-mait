@@ -5,15 +5,21 @@
     <title>{{ pose["name"] }}</title>
 </head>
 <body>
-    <h1>{{ pose["name"] }} ({{ pose["difficulty"] }})</h1>
-    <img src="{{ image }}">
+    <h1>{{ pose["name"] }}</h1>
+    <h3>({{ pose["difficulty"] }})</h3>
+    <img src="{{ image }}" style="width: 500px; height: 500px" alt="a person doing {{ pose["name"] }} pose">
     <p>{{ pose["description"] }}</p>
     <p>{{ pose["benefits"] }}</p>
+    {% if pose["variations"]|length != 1 %}
     <h4>Variations:</h4>
+    {% else %}
+    <h4>No other variations</h4>
+    {% endif %}
     {% for p,p_anchor in pose["variations"]|zip(pose["variations_key"]) %}
     <ul>
-        {% if p != pose["name"] %}
+        {% if p_anchor != anchor %}
         <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a></li>
+
         {% endif %}
     </ul>
     {% endfor %}
