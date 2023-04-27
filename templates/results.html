@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results</title>
+</head>
+<body>
+    {% for result in r[(page-1)*10:page*10] %}
+        <li><a href="{{ url_for("pose", pose=result["name"]) }}">{{ r["name"] }}</a></li>
+    {% endfor %}
+</body>
+<div class="page">
+    <p>Page {{ page }}</p>
+</div>
+<div class="buttons">
+    {% if page > 1 %}
+        <form action="{{ url_for('next_page', page_id = page - 1) }}" name="prev_page" method="post" class="btn">
+            <input type="submit" value="Previous Page" class="btn">
+        </form>
+    {% endif %}
+    {% if results.hits.total.value > (page * 10) %}
+        <form action="{{ url_for('next_page', page_id = page + 1) }}" name="next_page" method="post" class="btn">
+            <input type="submit" value="Next Page" class="btn">
+        </form>
+    {% endif %}
+</div>
+</html>
