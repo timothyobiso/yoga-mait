@@ -34,12 +34,12 @@ class SearchIndex:
                         },
                         "index": "poses"
                     }
-        elif category == "description":
+        elif category == "description" or category == "benefits":
             # Returns poses whose description matches the query.
             query = {
                         "query": {
                             "match": {
-                                "description": {
+                                category: {
                                     "query": query_text,
                                     "minimum_should_match": "75%"
                                 }
@@ -47,18 +47,6 @@ class SearchIndex:
                         },
                         "index": "poses"
                     }
-        elif category == "benefits":
-            query = {
-                "query": {
-                    "match": {
-                        "benefits": {
-                            "query": query_text,
-                            "minimum_should_match": "75%"
-                        }
-                    }
-                },
-                "index": "poses"
-            }
         elif category == "difficulty":
             query = {
                 "query": {
