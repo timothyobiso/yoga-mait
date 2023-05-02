@@ -24,4 +24,4 @@ def classify(query_emb , df: pd.DataFrame):
     decoder = {2: 'names', 0: 'description', 1: 'benefits'}
     idx = np.argmax([cos_sim(query_emb, emb) for emb in df['embedding'].tolist()])
     label = df.iloc[idx]['label']
-    return label
+    return decoder[label]
