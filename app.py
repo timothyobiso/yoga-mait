@@ -1,11 +1,10 @@
 from flask import Flask, render_template, request
 
-import query_classifier
-from utils import get_pose, string_to_list, get_poses
+from utils import get_pose, string_to_list
 from elasticsearch_dsl.connections import connections
 from gpt_yoga_interface import query_to_prompt, ask_chat_gpt
 from es_search import SearchIndex
-from query_classifier import get_model, get_classifier_df
+from query_classifier import get_model, get_classifier_df, classify
 
 app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
@@ -22,15 +21,19 @@ def results():
     connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
     query_text = request.form["query"]
     print(query_text)
-    cls = query_classifier.classify(MODEL.encode(query_text), DF)
+    cls = classify(MODEL.encode(query_text), DF)
     print("CLASSIFIED AS:", cls)
-    res = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
+    gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
     # print(res)
-    res = SearchIndex.search_index(res[0], cls, embed=False)
+    results = []
+    for r in gpt_results:
+        for pose in SearchIndex.search_index(r, cls, embed=False):
+            if pose not in results:
+                results.append(pose)
 
     return render_template("results.html",
                            q=query_text,
-                           page=1, results=res)
+                           page=1, results=results)
 
 
 @app.route('/pose/<name>')

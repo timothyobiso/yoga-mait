@@ -6,7 +6,7 @@
 </head>
 <body>
     {% for result in results[(page-1)*10:page*10] %}
-        <li><a href="{{ url_for("pose", name=result["name"]) }}">{{ result["name"] }}</a></li>
+        <li><a href="{{ url_for("pose", name=result["anchor"]) }}">{{ result["name"] }}</a></li>
     {% endfor %}
 </body>
 {#<div class="page">#}
