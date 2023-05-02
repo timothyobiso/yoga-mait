@@ -23,10 +23,11 @@ def results():
 @app.route('/pose/<name>')
 def pose(name):
 
-    image_urls = ["https://pocketyoga.com/assets/images/full/" + name + ".png", "https://pocketyoga.com/assets/images/full/" + name + "_R.png"]
+    #image_urls = ["https://pocketyoga.com/assets/images/full/" + name + ".png", "https://pocketyoga.com/assets/images/full/" + name + "_R.png"]
+    image_url = "/static/images/"+name+".png"
     return render_template("pose.html",
                            pose=get_pose(name),
-                           anchor=name, image=image_urls[is_image(image_urls)])
+                           anchor=name, image=image_url) # image=image_urls[is_image(image_urls)]
 
 
 if __name__ == '__main__':
