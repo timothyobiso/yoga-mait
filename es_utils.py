@@ -41,7 +41,7 @@ def load_poses(poses_folder_path: Union[str, os.PathLike]) -> Generator[Dict, No
             for i, pose in enumerate(poses_dict):
                 pose_dict = poses_dict[pose]
                 pose_dict["_id"] = i
-                text = [pose_dict["description"] + pose_dict["benefits"]]
+                text = [pose_dict["name"] + pose_dict["description"] + pose_dict["benefits"] + pose_dict["difficulty"]]
                 pose_dict["sbert_embedding"] = encoder.encode(text).tolist()[0]
                 yield pose_dict
 
