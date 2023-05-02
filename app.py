@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request
+
+import query_classifier
 from utils import get_pose, string_to_list, get_poses
 from elasticsearch_dsl.connections import connections
 from gpt_yoga_interface import query_to_prompt, ask_chat_gpt
 from es_search import SearchIndex
+from query_classifier import get_model, get_classifier_df
 
 app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
-
+MODEL = get_model()
+DF = get_classifier_df()
 
 @app.route('/')
 def hello_world():  # put application's code here
@@ -18,13 +22,11 @@ def results():
     connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
     query_text = request.form["query"]
     print(query_text)
+    cls = query_classifier.classify(MODEL.encode(query_text), DF)
+    print("CLASSIFIED AS:", cls)
     res = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
     # print(res)
-    res = SearchIndex.search_index(res[0], "name", embed=False)
-    for r in res:
-        print(r)
-        for field in r:
-            print(field)
+    res = SearchIndex.search_index(res[0], cls, embed=False)
 
     return render_template("results.html",
                            q=query_text,
