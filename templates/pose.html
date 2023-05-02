@@ -18,7 +18,8 @@
     {% for p,p_anchor in pose["variations"]|zip(pose["variations_key"]) %}
     <ul>
         {% if p_anchor != anchor %}
-        <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a></li>
+        <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a>
+        <img src="/static/small_images/{{p_anchor}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></li>
 
         {% endif %}
     </ul>
@@ -27,7 +28,8 @@
     {% for p, p_anchor in pose["transitions_from"]|zip(pose["transitions_from_key"]) %}
     <ul>
         {% if p != pose["name"] %}
-        <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a></li>
+        <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a>
+            <img src="/static/small_images/{{p_anchor}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></li>
         {% endif %}
     </ul>
     {% endfor %}
@@ -35,7 +37,8 @@
     {% for p, p_anchor in pose["transitions_into"]|zip(pose["transitions_into_key"]) %}
     <ul>
         {% if p != pose["name"] %}
-        <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a></li>
+        <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a>
+            <img src="/static/small_images/{{p_anchor}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></li>
         {% endif %}
     </ul>
     {% endfor %}
