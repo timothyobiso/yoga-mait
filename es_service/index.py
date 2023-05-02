@@ -46,6 +46,7 @@ class ESIndex(object):
             es_pose = BasePose(_id=i)
             es_pose.doc_id = pose["_id"]
             es_pose.name = pose["name"]
+            es_pose.anchor = pose["anchor"]
             es_pose.description = pose["description"]
             es_pose.benefits = pose["benefits"]
             es_pose.variations = pose["variations"]

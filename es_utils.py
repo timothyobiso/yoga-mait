@@ -40,6 +40,7 @@ def load_poses(poses_folder_path: Union[str, os.PathLike]) -> Generator[Dict, No
             poses_dict = json.loads(line)
             for i, pose in enumerate(poses_dict):
                 pose_dict = poses_dict[pose]
+                pose_dict["anchor"] = pose
                 pose_dict["_id"] = i
                 text = [pose_dict["name"] + pose_dict["description"] + pose_dict["benefits"] + pose_dict["difficulty"]]
                 pose_dict["sbert_embedding"] = encoder.encode(text).tolist()[0]

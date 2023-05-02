@@ -22,6 +22,9 @@ class BasePose(Document):
     name = (
         Text()
     )  # by default, Text field will be applied a standard analyzer at both index and search time
+    anchor = (
+        Keyword()
+    )
     description = Text(
         analyzer="standard"
     )
