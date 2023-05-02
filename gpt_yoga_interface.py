@@ -1,6 +1,6 @@
 import openai
 import os
-from  query_classifier import classify
+from query_classifier import classify
 import pandas as pd
 import numpy as np
 
@@ -12,7 +12,8 @@ model = 'gpt-3.5-turbo'
 def ask_chat_gpt(prompt: str) -> str:
     response = openai.ChatCompletion.create(
             model=model, 
-            messages = [{'role': 'user', 'content': prompt}], 
+            messages=[{'role': 'user', 'content': prompt}],
+            temperature=.1,
             max_tokens=1024)
     return response['choices'][0]['message']['content']
 

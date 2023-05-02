@@ -1,6 +1,5 @@
 from typing import Dict
 import json
-from urllib.request import urlopen
 
 
 def get_pose(anchor: str) -> Dict:
@@ -9,13 +8,11 @@ def get_pose(anchor: str) -> Dict:
         data = json.load(f)
         return data[anchor]
 
+def get_poses(poses):
+    print(poses[0])
+    return [get_pose(pose.lower().replace(" pose","").replace(" ", "_")) for pose in poses[:1]]
 
-def is_image(urls):
-    url = urls[0]
-    try:
-        urlopen(url)
-        return 0
-    except:
-        return 1
-      # get header of the http request
-
+def string_to_list(string):
+    lines = string.strip().split('\n')
+    items = [line.split('. ')[1] for line in lines]
+    return items
