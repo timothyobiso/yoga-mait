@@ -4,6 +4,9 @@ import os
 import json
 import functools
 import time
+from embedding_service.client import EmbeddingClient
+
+encoder = EmbeddingClient(host="localhost", embedding_type="sbert")
 
 
 def timer(func):
@@ -21,6 +24,12 @@ def timer(func):
     return wrapper_timer
 
 
+def embeddings(description: str, benefits: str):
+    text = [description] + [benefits]
+    embedding = encoder.encode(text)
+    return embedding
+
+
 def load_poses(poses_folder_path: Union[str, os.PathLike]) -> Generator[Dict, None, None]:
     # prepare and load the poses for ES indexing
     poses_folder_path = Path(poses_folder_path)
@@ -32,6 +41,8 @@ def load_poses(poses_folder_path: Union[str, os.PathLike]) -> Generator[Dict, No
             for i, pose in enumerate(poses_dict):
                 pose_dict = poses_dict[pose]
                 pose_dict["_id"] = i
+                text = [pose_dict["description"] + pose_dict["benefits"]]
+                pose_dict["sbert_embedding"] = encoder.encode(text).tolist()[0]
                 yield pose_dict
 
 

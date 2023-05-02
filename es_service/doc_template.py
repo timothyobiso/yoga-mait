@@ -6,6 +6,7 @@ from elasticsearch_dsl import (  # type: ignore
     Date,
     token_filter,
     analyzer,
+    tokenizer,
     Nested,
 )
 
@@ -54,6 +55,9 @@ class BasePose(Document):
     category = Keyword(
         multi=True
     )
+    sbert_embedding = DenseVector(
+        dims=768
+    )  # sentence BERT embedding in the DenseVector field
 
     def save(self, *args, **kwargs):
         """
