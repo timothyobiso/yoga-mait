@@ -22,15 +22,24 @@ class BasePose(Document):
     name = (
         Text()
     )  # by default, Text field will be applied a standard analyzer at both index and search time
+    name_embedding = DenseVector(
+        dims=768
+    )  # sentence BERT embedding in the DenseVector field
     anchor = (
         Keyword()
     )
     description = Text(
         analyzer="standard"
     )
+    description_embedding = DenseVector(
+        dims=768
+    )  # sentence BERT embedding in the DenseVector field
     benefits = Text(
         analyzer="standard"
     )
+    benefits_embedding = DenseVector(
+        dims=768
+    )  # sentence BERT embedding in the DenseVector field
     variations = Text(
         analyzer="standard",
         multi=True
