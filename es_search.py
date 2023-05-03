@@ -10,11 +10,12 @@ es = Elasticsearch()
 class SearchIndex:
 
     @staticmethod
-    def embed_query(query_text: str):
+    def embed_query(query_text: str, category: str):
         """
         Creates an embeddings for the text of the query.
         """
         query_vector = encoder.encode([query_text]).tolist()[0]  # Get the query embedding and convert it to a list
+        embedding = category + "_embedding"
         q_vector = {
             "query": {
                 "script_score": {
@@ -22,9 +23,9 @@ class SearchIndex:
                         "match_all": {}
                     },
                     "script": {
-                        "source": "cosineSimilarity(params.query_vector, 'sbert_embedding') + 1.0",
+                        "source": "cosineSimilarity(params.query_vector, params.embedding) + 1.0",
                         # +1.0 to avoid negative score
-                        "params": {"query_vector": query_vector}
+                        "params": {"query_vector": query_vector, "embedding": embedding}
                     }
                 }
             },
@@ -47,7 +48,7 @@ class SearchIndex:
                 }
             }
         else:
-            query = SearchIndex.embed_query(query_text)
+            query = SearchIndex.embed_query(query_text, category)
         return query
 
     @classmethod
@@ -65,7 +66,7 @@ class SearchIndex:
         if category == "name" and not response:
             # If a pose with the exact 'name' is not found, embed the query and use cosine similarity to find
             # the best possible match.
-            query = cls.embed_query(query_text)
+            query = cls.embed_query(query_text, category)
             s = Search(index="poses").query(query['query'])[:10]  # Search the index for top 10 matches
             response = s.execute()
 
@@ -80,4 +81,5 @@ if __name__ == '__main__':
             res.name, res.difficulty, res.benefits, sep="\t"
         )
 """
+
 
