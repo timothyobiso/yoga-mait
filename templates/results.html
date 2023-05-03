@@ -2,26 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Results</title>
+    <title>Results - {{ q }}</title>
 </head>
 <body>
+    <form action="{{ url_for('results') }}" name="search" method="post">
+        <label for="query">Query:</label>
+        <input type="text" id="query" name="query" size="50" required value="{{ q }}">
+        <input type="submit" value="Search">
+    </form>
+    <h3>Results for "{{ q }}"</h3>
     {% for result in results[(page-1)*20:page*20] %}
-        <li><a href="{{ url_for("pose", name=result["anchor"]) }}">{{ result["name"] }}</a></li>
+        <li><a href="{{ url_for("pose", name=result["anchor"]) }}">{{ result["name"] }}<img src="/static/small_images/{{result["anchor"]}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></a></li>
     {% endfor %}
 </body>
-{#<div class="page">#}
-{#    <p>Page {{ page }}</p>#}
-{#</div>#}
-{#<div class="buttons">#}
-{#    {% if page > 1 %}#}
-{#        <form action="{{ url_for('next_page', page_id = page - 1) }}" name="prev_page" method="post" class="btn">#}
-{#            <input type="submit" value="Previous Page" class="btn">#}
-{#        </form>#}
-{#    {% endif %}#}
-{#    {% if results|length > (page * 10) %}#}
-{#        <form action="{{ url_for('next_page', page_id = page + 1) }}" name="next_page" method="post" class="btn">#}
-{#            <input type="submit" value="Next Page" class="btn">#}
-{#        </form>#}
-{#    {% endif %}#}
-{#</div>#}
 </html>
