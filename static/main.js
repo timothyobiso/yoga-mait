@@ -6,16 +6,17 @@ var queries = [
     "child's",
     "sage gheranda",
     "stretch my lower back",
-    "arm and leg binding"
+    "arm and leg binding",
+    "my thigh hurts"
 ];
 
 let i = 0;
 let placeholder = "";
-let index = 0;
 const speed = 120;
 let direction = true;
+let txt = queries[Math.floor(Math.random() * queries.length)];;
+
 function type(){
-    txt = queries[index];
     if (direction) {
         placeholder += txt.charAt(i);
         document.getElementById("query").setAttribute("placeholder", placeholder);
@@ -29,11 +30,8 @@ function type(){
     if ((i == txt.length) || (!direction && (placeholder.length == 0))) {
         direction = !direction;
         if (i == txt.length) {
-            index++;
+            txt = queries[Math.floor(Math.random() * queries.length)];
             i = 0;
-        }
-        if (index == queries.length) {
-            index = 0;
         }
     }
 }
