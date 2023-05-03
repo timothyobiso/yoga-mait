@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Results - {{ q }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    <form action="{{ url_for('results') }}" name="search" method="post">
+<header>
+    <nav>
+        <form action="{{ url_for('results') }}" name="search" method="post">
         <label for="query">Query:</label>
         <input type="text" id="query" name="query" size="50" required value="{{ q }}">
         <input type="submit" value="Search">
     </form>
-    <h3>Results for "{{ q }}"</h3>
-    {% for result in results[(page-1)*20:page*20] %}
-        <li><a href="{{ url_for("pose", name=result["anchor"]) }}">{{ result["name"] }}<img src="/static/small_images/{{result["anchor"]}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></a></li>
-    {% endfor %}
+    </nav>
+</header>
+<main>
+    <h5>Results for "{{ q }}"</h5>
+    <ul>
+        {% for result in results[(page-1)*20:page*20] %}
+            <li><a href="{{ url_for("pose", name=result["anchor"]) }}"><h6>{{ result["name"] }}<img src="/static/small_images/{{result["anchor"]}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></h6></a></li>
+        {% endfor %}
+    </ul>
+</main>
+<footer>
+    <h6>Yoga MAIT (Mindfulness AI Tool)</h6>
+    <h6>&copy; 2023</h6>
+</footer>
 </body>
 </html>

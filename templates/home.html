@@ -3,12 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Yoga MAIT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    <form action="{{ url_for('results') }}" name="search", method="post">
-        <label for="query">Query:</label>
-        <input type="text" id="query" name="query" size="50" required>
+<header>
+      <nav>
+        <a href="{{ url_for('hello_world') }}" class="logo">Yoga MAIT</a>
+      </nav>
+    </header>
+<main>
+<h1>Yoga MAIT</h1>
+<p>Your Mindfulness AI Tool</p>
+    <form action="{{ url_for('results') }}" name="search", method="post" class="search-form">
+{#        <label for="query"></label>#}
+        <input type="text" id="query" name="query" size="50" required class="main-search" placeholder="Search...">
         <input type="submit" value="Search">
     </form>
+    </main>
+<footer>
+    <h6>Yoga MAIT (Mindfulness AI Tool)</h6>
+    <h6>&copy; 2023</h6>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="{{url_for('static', filename='main.js')}}"></script>
 </body>
 </html>

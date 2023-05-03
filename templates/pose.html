@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ pose["name"] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
     <h1>{{ pose["name"] }}</h1>
@@ -42,5 +43,10 @@
         {% endif %}
     </ul>
     {% endfor %}
+<footer>
+    <h6>Yoga MAIT (Mindfulness AI Tool)</h6>
+    <h6>&copy; 2023</h6>
+</footer>
 </body>
+
 </html>
