@@ -23,17 +23,22 @@ def results():
     print(query_text)
     cls = classify(MODEL.encode(query_text), DF)
     print("CLASSIFIED AS:", cls)
-    gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
+    if cls != "name":
+        res = []
+        gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
+        for r in gpt_results:
+            for p in SearchIndex.search_index(r, cls)[:5]:
+                if p not in res:
+                    res.append(p)
+    else:
+        res = SearchIndex.search_index(query_text, cls)
+    # gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
     # print(res)
-    results = []
-    for r in gpt_results:
-        for pose in SearchIndex.search_index(r, cls, embed=False):
-            if pose not in results:
-                results.append(pose)
+
 
     return render_template("results.html",
                            q=query_text,
-                           page=1, results=results)
+                           page=1, results=res)
 
 
 @app.route('/pose/<name>')
