@@ -10,76 +10,10 @@ es = Elasticsearch()
 class SearchIndex:
 
     @staticmethod
-    def create_query(query_text: str, category: str) -> dict:
-        if category == "name":
-            # Returns poses whose name matches the query. If the name does not match, but one of the poses
-            # listed in variations does, its score is increased. E.g. query "chair" will also return "Figure
-            # Four" because it lists chair-like poses in its variations.
-            query = {
-                        "query": {
-                            "bool": {
-                                "should": [
-                                    {
-                                        "match": {
-                                            "name": {
-                                                "query": query_text,
-                                                "boost": 2
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "match": {
-                                            "variations": {
-                                                "query": query_text,
-                                                "boost": 1
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        "index": "poses"
-                    }
-        elif category == "description" or category == "benefits":
-            # Returns poses whose description matches the query.
-            query = {
-                        "query": {
-                            "match": {
-                                category: {
-                                    "query": query_text,
-                                    "minimum_should_match": "75%"
-                                }
-                            }
-                        },
-                        "index": "poses"
-                    }
-        elif category == "difficulty":
-            query = {
-                "query": {
-                    "match": {
-                        "difficulty": query_text
-                    }
-                }
-            }
-        else:
-            # transitions_from, transitions_into, category, variations
-            query = {
-                "query": {
-                    "bool": {
-                        "must": [
-                            {
-                                "terms": {
-                                    category: [query_text]
-                                }
-                            }
-                        ]
-                    }
-                }
-            }
-        return query
-
-    @staticmethod
     def embed_query(query_text: str):
+        """
+        Creates an embeddings for the text of the query.
+        """
         query_vector = encoder.encode([query_text]).tolist()[0]  # Get the query embedding and convert it to a list
         q_vector = {
             "query": {
@@ -97,23 +31,53 @@ class SearchIndex:
         }
         return q_vector
 
+    @staticmethod
+    def create_query(query_text: str, category: str) -> dict:
+        """
+        Based on search category, create a query object (dictionary) from the text of the query.
+        "name" queries are "match-phrase" queries, "description" and "benefits" queries use sbert embeddings.
+        """
+        if category == "name":
+            # Return poses whose name matches the text of the query.
+            query = {
+                "query": {
+                    "match_phrase": {
+                        "name": query_text
+                    }
+                }
+            }
+        else:
+            query = SearchIndex.embed_query(query_text)
+        return query
 
     @classmethod
-    def search_index(cls, query_text: str, category: str, embed=False) -> list:
+    def search_index(cls, query_text: str, category: str) -> list:
         """
-        Takes a list of queries
+        Takes the text of query and search category, returns a list of poses that best match the query.
         """
-        query = cls.embed_query(query_text) if embed else cls.create_query(query_text, category)
-        s = Search(index="poses").query(query['query'])[:8]  # Search the index for top 10 matches
+        if category not in ["name", "description", "benefits"]:
+            raise ValueError("Category must be 'name', 'description', or 'benefits'.")
+
+        query = cls.create_query(query_text, category)  # Create a query
+        s = Search(index="poses").query(query['query'])[:10]  # Search the index for top 10 matches
         response = s.execute()
+
+        if category == "name" and not response:
+            # If a pose with the exact 'name' is not found, embed the query and use cosine similarity to find
+            # the best possible match.
+            query = cls.embed_query(query_text)
+            s = Search(index="poses").query(query['query'])[:10]  # Search the index for top 10 matches
+            response = s.execute()
+
         return response
 
-
+"""
 if __name__ == '__main__':
     connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
-    search = SearchIndex.search_index("easy pose for back pain", "-", embed=True)
+    search = SearchIndex.search_index("neck pain", "benefits")
     for res in search:
         print(
-            res.name, res.difficulty, res.description, res.benefits, sep="\t"
+            res.name, res.difficulty, res.benefits, sep="\t"
         )
+"""
 
