@@ -40,10 +40,33 @@ main {
   padding-top: 100px;
 }
 
+pose {
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  padding-left: 30px;
+}
+
+.result {
+  display: inline-block;
+}
+
 h1 {
   font-size: 8em;
   font-weight: bold;
   margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 5em;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+h2 {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 h5 {
@@ -97,4 +120,8 @@ input[type="submit"]:hover {
 footer {
   text-align: center;
   padding: 20px;
+}
+
+a:visited {
+ text-decoration: none;
 }

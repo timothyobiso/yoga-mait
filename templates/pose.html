@@ -5,16 +5,32 @@
     <title>{{ pose["name"] }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
+
 <body>
-    <h1>{{ pose["name"] }}</h1>
+<header>
+    <nav>
+        <span class="result">
+        <a href="{{ url_for('hello_world') }}" class="logo">Yoga MAIT</a>
+        </span>
+        <span class="result">
+            <form action="{{ url_for('results') }}" name="search" method="post">
+                <input type="text" id="query" name="query" size="50" required value="{{ q }}" placeholder="Search...">
+                <input type="submit" value="Search">
+            </form>
+        </span>
+    </nav>
+</header>
+<pose>
+    <h2>{{ pose["name"] }}</h2>
     <h3>({{ pose["difficulty"] }})</h3>
     <img src="{{ image }}" style="width: 500px; height: 500px" alt="a person doing {{ pose["name"] }} pose">
-    <p>{{ pose["description"] }}</p>
-    <p>{{ pose["benefits"] }}</p>
+    <h6>{{ pose["description"] }}</h6>
+    <h6>{{ pose["benefits"] }}</h6>
     {% if pose["variations"]|length != 1 %}
-    <h4>Variations:</h4>
+    <br>
+    <h6>Variations:</h6>
     {% else %}
-    <h4>No other variations</h4>
+    <h6>No other variations</h6>
     {% endif %}
     {% for p,p_anchor in pose["variations"]|zip(pose["variations_key"]) %}
     <ul>
@@ -25,7 +41,8 @@
         {% endif %}
     </ul>
     {% endfor %}
-    <h4>Transitions From:</h4>
+    <br>
+    <h6>Transitions From:</h6>
     {% for p, p_anchor in pose["transitions_from"]|zip(pose["transitions_from_key"]) %}
     <ul>
         {% if p != pose["name"] %}
@@ -34,7 +51,8 @@
         {% endif %}
     </ul>
     {% endfor %}
-    <h4>Transitions Into:</h4>
+    <br>
+    <h6>Transitions Into:</h6>
     {% for p, p_anchor in pose["transitions_into"]|zip(pose["transitions_into_key"]) %}
     <ul>
         {% if p != pose["name"] %}
@@ -43,9 +61,10 @@
         {% endif %}
     </ul>
     {% endfor %}
+</pose>
 <footer>
     <h6>Yoga MAIT (Mindfulness AI Tool)</h6>
-    <h6>&copy; 2023</h6>
+    <h6>2023</h6>
 </footer>
 </body>
 

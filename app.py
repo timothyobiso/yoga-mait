@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-
+from flask_caching import Cache
 from utils import get_pose, string_to_list
 from elasticsearch_dsl.connections import connections
 from gpt_yoga_interface import query_to_prompt, ask_chat_gpt
@@ -8,6 +8,10 @@ from query_classifier import get_model, get_classifier_df, classify
 
 app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
+
+cache = Cache(config={'CACHE_TYPE': "SimpleCache"})
+cache.init_app(app)
+
 MODEL = get_model()
 DF = get_classifier_df()
 
@@ -20,9 +24,9 @@ def hello_world():  # put application's code here
 def results():
     connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
     query_text = request.form["query"]
-    print(query_text)
+    # print(query_text)
     cls = classify(MODEL.encode(query_text), DF)
-    print("CLASSIFIED AS:", cls)
+    # print("CLASSIFIED AS:", cls)
     if cls != "name":
         res = []
         gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
@@ -35,7 +39,7 @@ def results():
     # gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
     # print(res)
 
-
+    cache.set("q", query_text)
     return render_template("results.html",
                            q=query_text,
                            page=1, results=res)
@@ -46,7 +50,7 @@ def pose(name):
     image_url = "/static/images/"+name+".png"
     return render_template("pose.html",
                            pose=get_pose(name),
-                           anchor=name, image=image_url) # image=image_urls[is_image(image_urls)]
+                           anchor=name, image=image_url, q=cache.get("q")) # image=image_urls[is_image(image_urls)]
 
 
 if __name__ == '__main__':
