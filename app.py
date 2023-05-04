@@ -48,9 +48,11 @@ def results():
 @app.route('/pose/<name>')
 def pose(name):
     image_url = "/static/images/"+name+".png"
+    q = cache.get("q")
+    filler = "" if q is None else q
     return render_template("pose.html",
                            pose=get_pose(name),
-                           anchor=name, image=image_url, q=cache.get("q")) # image=image_urls[is_image(image_urls)]
+                           anchor=name, image=image_url, q=filler) # image=image_urls[is_image(image_urls)]
 
 
 if __name__ == '__main__':

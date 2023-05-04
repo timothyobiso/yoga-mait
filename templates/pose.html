@@ -23,8 +23,8 @@
 <pose>
     <h2>{{ pose["name"] }}</h2>
     <h3>({{ pose["difficulty"] }})</h3>
-    <img src="{{ image }}" style="width: 500px; height: 500px" alt="a person doing {{ pose["name"] }} pose">
-    <h6>{{ pose["description"] }}</h6>
+    <img src="{{ image }}" style="width: 500px; height: 500px" alt="a person doing {{ pose["name"] }} pose" class="result">
+    <h6 class="result">{{ pose["description"] }}</h6>
     <h6>{{ pose["benefits"] }}</h6>
     {% if pose["variations"]|length != 1 %}
     <br>
@@ -63,8 +63,7 @@
     {% endfor %}
 </pose>
 <footer>
-    <h6>Yoga MAIT (Mindfulness AI Tool)</h6>
-    <h6>2023</h6>
+    <h6>Yoga MAIT (Mindfulness AI Tool) - 2023</h6>
 </footer>
 </body>
 

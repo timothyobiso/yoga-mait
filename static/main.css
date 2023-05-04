@@ -125,3 +125,11 @@ footer {
 a:visited {
  text-decoration: none;
 }
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
