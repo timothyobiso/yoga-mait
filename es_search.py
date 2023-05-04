@@ -52,10 +52,14 @@ class SearchIndex:
         return query
 
     @classmethod
-    def search_index(cls, query_text: str, category: str) -> list:
+    def search_index(cls, query_text: str, category: str) -> tuple[list, bool]:
         """
-        Takes the text of query and search category, returns a list of poses that best match the query.
+        Takes the text of query and search category, returns a tuple with a list of poses that best
+        match the query and a boolean whose value is True if keyword search by 'name' failed and
+        False otherwise.
         """
+        fail = False
+
         if category not in ["name", "description", "benefits"]:
             raise ValueError("Category must be 'name', 'description', or 'benefits'.")
 
@@ -66,20 +70,22 @@ class SearchIndex:
         if category == "name" and not response:
             # If a pose with the exact 'name' is not found, embed the query and use cosine similarity to find
             # the best possible match.
+            fail = True
             query = cls.embed_query(query_text, category)
             s = Search(index="poses").query(query['query'])[:10]  # Search the index for top 10 matches
             response = s.execute()
 
-        return response
+        return response, fail
+
 
 """
 if __name__ == '__main__':
     connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
-    search = SearchIndex.search_index("neck pain", "benefits")
-    for res in search:
+    search = SearchIndex.search_index("big tortoise", "name")
+    print(search[1])
+    for res in search[0]:
         print(
             res.name, res.difficulty, res.benefits, sep="\t"
         )
 """
-
 
