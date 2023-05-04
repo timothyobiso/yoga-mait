@@ -32,6 +32,7 @@ def embeddings(description: str, benefits: str):
 
 def load_poses(poses_folder_path: Union[str, os.PathLike]) -> Generator[Dict, None, None]:
     # prepare and load the poses for ES indexing
+    global i
     poses_folder_path = Path(poses_folder_path)
     poses_docs_path = poses_folder_path.joinpath("data_updated.json")
 
@@ -39,15 +40,16 @@ def load_poses(poses_folder_path: Union[str, os.PathLike]) -> Generator[Dict, No
         for line in f:
             poses_dict = json.loads(line)
             for i, pose in enumerate(poses_dict):
-                pose_dict = poses_dict[pose]
-                pose_dict["anchor"] = pose
-                pose_dict["_id"] = i
-                text = [pose_dict["name"] + pose_dict["description"] + pose_dict["benefits"] + pose_dict["difficulty"]]
-                pose_dict["sbert_embedding"] = encoder.encode(text).tolist()[0]
-                pose_dict["name_embedding"] = encoder.encode([pose_dict["name"]]).tolist()[0]
-                pose_dict["description_embedding"] = encoder.encode([pose_dict["description"]]).tolist()[0]
-                pose_dict["benefits_embedding"] = encoder.encode([pose_dict["benefits"]]).tolist()[0]
-                yield pose_dict
+                if i < 10:
+                    pose_dict = poses_dict[pose]
+                    pose_dict["anchor"] = pose
+                    pose_dict["_id"] = i
+                    description_diff = [pose_dict["description"] + pose_dict["difficulty"]]
+                    benefits_diff = [pose_dict["benefits"] + pose_dict["difficulty"]]
+                    pose_dict["name_embedding"] = encoder.encode([pose_dict["name"]]).tolist()[0]
+                    pose_dict["description_embedding"] = encoder.encode(description_diff).tolist()[0]
+                    pose_dict["benefits_embedding"] = encoder.encode(benefits_diff).tolist()[0]
+                    yield pose_dict
 
 
 if __name__ == "__main__":

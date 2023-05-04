@@ -60,7 +60,6 @@ class ESIndex(object):
             es_pose.transitions_from_key = pose["transitions_from_key"]
             es_pose.difficulty = pose["difficulty"]
             es_pose.category = pose["category"]
-            es_pose.sbert_embedding = pose["sbert_embedding"]
             yield es_pose
 
     def load(self, poses: Union[Iterator[Dict], Sequence[Dict]]):
