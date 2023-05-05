@@ -77,15 +77,13 @@ class SearchIndex:
 
         return response, fail
 
-
 """
 if __name__ == '__main__':
     connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
-    search = SearchIndex.search_index("big tortoise", "name")
-    print(search[1])
+    search = SearchIndex.search_index("beginner sitting pose", "description")
     for res in search[0]:
         print(
-            res.name, res.difficulty, res.benefits, sep="\t"
+            res.name, res.difficulty, res.description, sep="\t"
         )
 """
 
