@@ -7,15 +7,9 @@
 </head>
 <body>
 <header>
-    <nav>
-        <span class="result">
+      <nav>
         <a href="{{ url_for('hello_world') }}" class="logo">Yoga MAIT</a>
-            <form action="{{ url_for('results') }}" name="search" method="post">
-                <input type="text" id="query" name="query" size="50" required value="{{ q }}" placeholder="Search...">
-                <input type="submit" value="Search">
-            </form>
-        </span>
-    </nav>
+      </nav>
 </header>
 <main>
 <h1>Yoga MAIT</h1>
