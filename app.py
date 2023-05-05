@@ -28,8 +28,12 @@ def results():
     connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
     query_text = request.form["query"]
     # print(query_text)
+    if query_text[len(query_text)-5:] == " pose":
+        query_text = query_text[:len(query_text)-5]
     cls = classify(MODEL.encode(query_text), DF)
+
     print("CLASSIFIED AS:", cls)
+
     if cls != "name":
         res = []
         gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
