@@ -19,8 +19,8 @@ class BasePose(Document):
     doc_id = (
         Keyword()
     )  # the doc_id is treated as a Keyword (its value won't be tokenized or normalized).
-    name = (
-        Text()
+    name = Text(
+        analyzer="snowball"
     )  # by default, Text field will be applied a standard analyzer at both index and search time
     name_embedding = DenseVector(
         dims=768
@@ -29,27 +29,27 @@ class BasePose(Document):
         Keyword()
     )
     description = Text(
-        analyzer="standard"
+        analyzer="snowball"
     )
     description_embedding = DenseVector(
         dims=768
     )  # sentence BERT embedding in the DenseVector field
     benefits = Text(
-        analyzer="standard"
+        analyzer="snowball"
     )
     benefits_embedding = DenseVector(
         dims=768
     )  # sentence BERT embedding in the DenseVector field
     variations = Text(
-        analyzer="standard",
+        analyzer="snowball",
         multi=True
     )
     transitions_into = Text(
-        analyzer="standard",
+        analyzer="snowball",
         multi=True
     )
     transitions_from = Text(
-        analyzer="standard",
+        analyzer="snowball",
         multi=True
     )
     variations_key = Keyword(
@@ -62,7 +62,7 @@ class BasePose(Document):
         multi=True
     )
     difficulty = Text(
-        analyzer="standard"
+        analyzer="snowball"
     )
     category = Keyword(
         multi=True

@@ -45,9 +45,12 @@ class SearchIndex:
             query = {
                 "query": {
                     "match_phrase": {
-                        "name": query_text
+                        "name": {
+                            "query": query_text,
+                        }
                     }
-                }
+                },
+                "analyzer": "snowball"
             }
         else:
             query = SearchIndex.embed_query(query_text, category)
