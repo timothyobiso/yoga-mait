@@ -43,12 +43,7 @@ def results():
 
     cache.set("q", query_text)
     return render_template("results.html",
-                           q=query_text,
-<<<<<<< HEAD
-                           page=1, results=res, fail=fail, cls=cls)
-=======
-                           page=1, results=res[0])
->>>>>>> 27aea857e7713ca03d6832f93c5369606c861d41
+                           q=query_text, page=1, results=res, fail=fail, cls=cls)
 
 
 @app.route('/pose/<name>')
