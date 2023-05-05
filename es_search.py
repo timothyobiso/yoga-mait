@@ -1,5 +1,7 @@
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.connections import connections
+from typing import Tuple
+
 from embedding_service.client import EmbeddingClient
 from elasticsearch import Elasticsearch
 
@@ -52,7 +54,7 @@ class SearchIndex:
         return query
 
     @classmethod
-    def search_index(cls, query_text: str, category: str) -> tuple[list, bool]:
+    def search_index(cls, query_text: str, category: str) -> Tuple[list, bool]:
         """
         Takes the text of query and search category, returns a tuple with a list of poses that best
         match the query and a boolean whose value is True if keyword search by 'name' failed and
