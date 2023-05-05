@@ -10,8 +10,6 @@
     <nav>
         <span class="result">
         <a href="{{ url_for('hello_world') }}" class="logo">Yoga MAIT</a>
-        </span>
-        <span class="result">
             <form action="{{ url_for('results') }}" name="search" method="post">
                 <input type="text" id="query" name="query" size="50" required value="{{ q }}" placeholder="Search...">
                 <input type="submit" value="Search">
@@ -20,20 +18,29 @@
     </nav>
 </header>
 <main>
-    <h5>Results for "{{ q }}"</h5>
+    {% if fail %}
+        <h4>Could not find exact pose match, searching using embeddings for "{{ q }}"</h4>
+    {% else %}
+        <h5>Results for "{{ q }}"</h5>
+    {% endif %}
     <ul>
         {% for result in results[(page-1)*20:page*20] %}
             <li>
-                <span class="result">
+                <div class="result">
+                    <div class="col">
                     <a href="{{ url_for("pose", name=result["anchor"]) }}">
                         <h6>{{ result["name"] }}</h6>
                     </a>
-                </span>
-                <span class="result">
+                        {% if cls == "benefits" %}
+                            <p class="desc">{{ result["benefits"][:100] }}...</p>
+                        {% else %}
+                            <p class="desc">{{ result["description"][:100] }}...</p>
+                        {% endif %}
+                        </div>
                     <a href="{{ url_for("pose", name=result["anchor"]) }}">
                         <img src="/static/small_images/{{result["anchor"]}}.png" style="width: 200px; height: 200px" alt="/static/small_images/{{p_anchor}}.png">
                     </a>
-                </span>
+                </div>
             </li>
         {% endfor %}
     </ul>

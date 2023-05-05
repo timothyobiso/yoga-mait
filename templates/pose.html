@@ -9,23 +9,29 @@
 <body>
 <header>
     <nav>
-        <span class="result">
+        <div class="result search">
         <a href="{{ url_for('hello_world') }}" class="logo">Yoga MAIT</a>
-        </span>
-        <span class="result">
             <form action="{{ url_for('results') }}" name="search" method="post">
                 <input type="text" id="query" name="query" size="50" required value="{{ q }}" placeholder="Search...">
                 <input type="submit" value="Search">
             </form>
-        </span>
+        </div>
     </nav>
 </header>
-<pose>
-    <h2>{{ pose["name"] }}</h2>
+<div class="pose">
+    <h2 class="title">{{ pose["name"] }}</h2>
     <h3>({{ pose["difficulty"] }})</h3>
-    <img src="{{ image }}" style="width: 500px; height: 500px" alt="a person doing {{ pose["name"] }} pose" class="result">
-    <h6 class="result">{{ pose["description"] }}</h6>
-    <h6>{{ pose["benefits"] }}</h6>
+    <div class="result left">
+        <img src="{{ image }}" style="width: 500px; height: 500px" alt="a person doing {{ pose["name"] }} pose">
+        <div class="column descr">
+            <h6>Description</h6>
+            <p class="title">{{ pose["description"] }}</p>
+        </div>
+        <div class="column ben">
+            <h6>Benefits</h6>
+            <p class="title">{{ pose["benefits"] }}</p>
+        </div>
+    </div>
     {% if pose["variations"]|length != 1 %}
     <br>
     <h6>Variations:</h6>
@@ -33,7 +39,7 @@
     <h6>No other variations</h6>
     {% endif %}
     {% for p,p_anchor in pose["variations"]|zip(pose["variations_key"]) %}
-    <ul>
+    <ul class="line">
         {% if p_anchor != anchor %}
         <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a>
         <img src="/static/small_images/{{p_anchor}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></li>
@@ -44,7 +50,7 @@
     <br>
     <h6>Transitions From:</h6>
     {% for p, p_anchor in pose["transitions_from"]|zip(pose["transitions_from_key"]) %}
-    <ul>
+    <ul class="line">
         {% if p != pose["name"] %}
         <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a>
             <img src="/static/small_images/{{p_anchor}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></li>
@@ -54,14 +60,14 @@
     <br>
     <h6>Transitions Into:</h6>
     {% for p, p_anchor in pose["transitions_into"]|zip(pose["transitions_into_key"]) %}
-    <ul>
+    <ul class="line">
         {% if p != pose["name"] %}
         <li><a href="{{ url_for("pose",name=p_anchor) }}">{{ p }}</a>
             <img src="/static/small_images/{{p_anchor}}.png" style="width: 80 px; height: 80px" alt="/static/small_images/{{p_anchor}}.png"></li>
         {% endif %}
     </ul>
     {% endfor %}
-</pose>
+</div>
 <footer>
     <h6>Yoga MAIT (Mindfulness AI Tool) - 2023</h6>
 </footer>

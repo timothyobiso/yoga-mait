@@ -26,23 +26,25 @@ def results():
     query_text = request.form["query"]
     # print(query_text)
     cls = classify(MODEL.encode(query_text), DF)
-    # print("CLASSIFIED AS:", cls)
+    print("CLASSIFIED AS:", cls)
     if cls != "name":
         res = []
         gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
         for r in gpt_results:
-            for p in SearchIndex.search_index(r, cls)[:5]:
+            response, fail = SearchIndex.search_index(r, cls)
+            for p in response[:5]:
                 if p not in res:
                     res.append(p)
     else:
-        res = SearchIndex.search_index(query_text, cls)
+
+        res, fail = SearchIndex.search_index(query_text, cls)
     # gpt_results = string_to_list(ask_chat_gpt(query_to_prompt(query_text)))
     # print(res)
 
     cache.set("q", query_text)
     return render_template("results.html",
                            q=query_text,
-                           page=1, results=res)
+                           page=1, results=res, fail=fail, cls=cls)
 
 
 @app.route('/pose/<name>')
