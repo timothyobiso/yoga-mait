@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yoga MAIT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+<header>
+      <nav>
+        <a href="{{ url_for('hello_world') }}" class="logo">Yoga MAIT</a>
+      </nav>
+</header>
+<main>
+<h1>404</h1>
+<p>Page Not Found</p>
+</main>
+<footer>
+    <h6>Yoga MAIT (Mindfulness AI Tool) - 2023</h6>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="{{url_for('static', filename='main.js')}}"></script>
+</body>
+</html>

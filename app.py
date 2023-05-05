@@ -19,6 +19,9 @@ DF = get_classifier_df()
 def hello_world():  # put application's code here
     return render_template("home.html")
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
 @app.route("/results", methods=["POST"])
 def results():
