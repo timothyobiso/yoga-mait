@@ -33,13 +33,13 @@ class BasePose(Document):
     )
     description_embedding = DenseVector(
         dims=768
-    )  # sentence BERT embedding
+    )  # sentence BERT embedding of "description" + "difficulty"
     benefits = Text(
         analyzer="snowball"
     )
     benefits_embedding = DenseVector(
         dims=768
-    )  # sentence BERT embedding
+    )  # sentence BERT embedding of "benefits" + "difficulty"
     variations = Text(
         analyzer="snowball",
         multi=True
