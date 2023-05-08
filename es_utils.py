@@ -1,3 +1,6 @@
+# Loads json file with our data, prepares it to be uploaded into Elasticsearch
+# Developed by Anastasiia Tatlubaeva
+
 from pathlib import Path
 from typing import Dict, Union, Generator
 import os
@@ -24,15 +27,8 @@ def timer(func):
     return wrapper_timer
 
 
-def embeddings(description: str, benefits: str):
-    text = [description] + [benefits]
-    embedding = encoder.encode(text)
-    return embedding
-
-
 def load_poses(poses_folder_path: Union[str, os.PathLike]) -> Generator[Dict, None, None]:
-    # prepare and load the poses for ES indexing
-    global i
+    # Prepare and load the poses for ES indexing
     poses_folder_path = Path(poses_folder_path)
     poses_docs_path = poses_folder_path.joinpath("data_updated.json")
 

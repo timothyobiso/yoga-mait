@@ -1,7 +1,8 @@
-from elasticsearch_dsl import Search
-from elasticsearch_dsl.connections import connections
-from typing import Tuple
+# Search function for "poses" database
+# Developed by Anaastasiia Tatlubaeva
 
+from elasticsearch_dsl import Search
+from typing import Tuple
 from embedding_service.client import EmbeddingClient
 from elasticsearch import Elasticsearch
 
@@ -16,7 +17,7 @@ class SearchIndex:
         """
         Creates an embeddings for the text of the query.
         """
-        query_vector = encoder.encode([query_text]).tolist()[0]  # Get the query embedding and convert it to a list
+        query_vector = encoder.encode([query_text]).tolist()[0]  # Encode text of the query
         embedding = category + "_embedding"
         q_vector = {
             "query": {
@@ -31,7 +32,7 @@ class SearchIndex:
                     }
                 }
             },
-        }
+        }  # Create a vector query
         return q_vector
 
     @staticmethod
@@ -65,9 +66,6 @@ class SearchIndex:
         """
         fail = False
 
-        if category not in ["name", "description", "benefits"]:
-            raise ValueError("Category must be 'name', 'description', or 'benefits'.")
-
         query = cls.create_query(query_text, category)  # Create a query
         s = Search(index="poses").query(query['query'])[:10]  # Search the index for top 10 matches
         response = s.execute()
@@ -82,13 +80,7 @@ class SearchIndex:
 
         return response, fail
 
-"""
+
 if __name__ == '__main__':
-    connections.create_connection(hosts=["localhost"], timeout=100, alias="default")
-    search = SearchIndex.search_index("beginner sitting pose", "description")
-    for res in search[0]:
-        print(
-            res.name, res.difficulty, res.description, sep="\t"
-        )
-"""
+    pass
 

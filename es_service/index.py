@@ -1,10 +1,10 @@
+# Adapted from ps5 by Anastasiia Tatlubaeva
+# Creates database "poses' and loads into Elasticsearch
+
 from typing import Iterator, Dict, Union, Sequence, Generator
-
-from elasticsearch_dsl import Index  # type: ignore
-
-from elasticsearch_dsl.connections import connections  # type: ignore
+from elasticsearch_dsl import Index
+from elasticsearch_dsl.connections import connections
 from elasticsearch.helpers import bulk
-
 from es_service.doc_template import BasePose
 
 

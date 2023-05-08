@@ -1,13 +1,13 @@
+# Adapted from ps5 by Anastasiia Tatlubaeva
+# Creates a template for a single document in Elasticsearch database "poses'
+
 from elasticsearch_dsl import (  # type: ignore
     Document,
     Text,
     Keyword,
     DenseVector,
-    Date,
-    token_filter,
     analyzer,
-    tokenizer,
-    Nested,
+    tokenizer
 )
 
 
@@ -21,52 +21,52 @@ class BasePose(Document):
     )  # the doc_id is treated as a Keyword (its value won't be tokenized or normalized).
     name = Text(
         analyzer="snowball"
-    )  # by default, Text field will be applied a standard analyzer at both index and search time
+    )
     name_embedding = DenseVector(
         dims=768
-    )  # sentence BERT embedding in the DenseVector field
+    )  # sentence BERT embedding of "name"
     anchor = (
         Keyword()
-    )
+    )  # original html anchor text (for navigation)
     description = Text(
         analyzer="snowball"
     )
     description_embedding = DenseVector(
         dims=768
-    )  # sentence BERT embedding in the DenseVector field
+    )  # sentence BERT embedding
     benefits = Text(
         analyzer="snowball"
     )
     benefits_embedding = DenseVector(
         dims=768
-    )  # sentence BERT embedding in the DenseVector field
+    )  # sentence BERT embedding
     variations = Text(
         analyzer="snowball",
         multi=True
-    )
+    )  # list of variations in Text format
     transitions_into = Text(
         analyzer="snowball",
         multi=True
-    )
+    )  # list of poses to transition into in Text format
     transitions_from = Text(
         analyzer="snowball",
         multi=True
-    )
+    )  # list of poses to transition from in Text format
     variations_key = Keyword(
         multi=True
-    )  # to perform exact matches on the strings (variations) and treat them as individual terms
+    )  # list of variations in Text format in Keyword format
     transitions_into_key = Keyword(
         multi=True
-    )
+    )  # list of poses to transition into in Keyword format
     transitions_from_key = Keyword(
         multi=True
-    )
+    )  # list of poses to transition from in Keyword format
     difficulty = Text(
         analyzer="snowball"
-    )
+    )  # difficulty of the pose
     category = Keyword(
         multi=True
-    )
+    )  # broader pose category
 
     def save(self, *args, **kwargs):
         """
