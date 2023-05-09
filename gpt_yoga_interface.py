@@ -1,14 +1,21 @@
+# Author: Ben Soli
+"""
+This module contains the functions used for interacting with chat gpt
+"""
+
 import openai
 import os
 from query_classifier import classify
 import pandas as pd
 import numpy as np
 
+# read in api key stored in a txt file
 with open('openai_api_key.txt', 'r', encoding='utf8') as key:
     openai.api_key = key.readlines()[0]
 
 model = 'gpt-3.5-turbo'
 
+# queries chat gpt and returns the output as a string
 def ask_chat_gpt(prompt: str) -> str:
     response = openai.ChatCompletion.create(
             model=model, 
@@ -33,11 +40,4 @@ if __name__ == '__main__':
 
 
 
-# need to take a query and pass to classifier
-
-# take classifier output and develop a prompt
-
-# extract names of poses and keyword match based on pose title
-
-# alternatively just use an embedding model and match documents based on fields
 
