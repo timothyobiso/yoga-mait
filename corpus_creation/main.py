@@ -1,3 +1,4 @@
+# Author Justin Lewman
 from Scraper import Scraper
 import json
 

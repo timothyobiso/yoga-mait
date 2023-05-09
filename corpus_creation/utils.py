@@ -1,3 +1,4 @@
+# Author Justin Lewman
 import functools
 import json
 import os.path
